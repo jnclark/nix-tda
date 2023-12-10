@@ -1,0 +1,25 @@
+#+title: Topological Data Analysis and Persistent Homology Nix flake
+#+options: toc:nil
+
+This repository offers a Nix flake with Nix packages, patches and
+shells I have used in various personal projects and collaborations
+over the last several years (now with 100% more Nix, which may assist
+in reproducible research).
+
+Note: To use some of the attributes and packages (namely those
+depending on CUDA), one may need to ensure their =LD_LIBRARY_PATH= is
+properly configured as to ensure a compatible NVIDIA driver/CUDA
+Toolkit pair. In theory, this should be handled transparently by the
+flake itself in the provided =devShells= if you are on NixOS. Also,
+tested working on Debian 12 (with nix package manager).
+
+If this is useful to you, in research or otherwise. Let me know, I'd
+love to hear it.
+
+* License Note
+
+Similar to what Nixpkgs states, the MIT license does not apply to the
+packages built by this flake (they retain their original license), but
+the license applies to the files found in this repository, with the
+exception being patches as they may be considered derivative works of
+the packages to which they apply.

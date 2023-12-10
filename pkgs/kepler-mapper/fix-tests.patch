@@ -1,0 +1,44 @@
+diff --git a/test/test_coverer.py b/test/test_coverer.py
+index 602bc74..0b04d77 100644
+--- a/test/test_coverer.py
++++ b/test/test_coverer.py
+@@ -124,12 +124,12 @@ class TestCover:
+     def test_radius_dist(self):
+ 
+         test_cases = [
+-            {"cubes": 1, "range": [0, 4], "overlap": 0.4, "radius": 10.0 / 3},
+-            {"cubes": 1, "range": [0, 4], "overlap": 0.9, "radius": 20.0},
+-            {"cubes": 2, "range": [-4, 4], "overlap": 0.5, "radius": 4.0},
+-            {"cubes": 3, "range": [-4, 4], "overlap": 0.5, "radius": 2.666666666},
+-            {"cubes": 10, "range": [-4, 4], "overlap": 0.5, "radius": 0.8},
+-            {"cubes": 10, "range": [-4, 4], "overlap": 1.0, "radius": np.inf},
++            {"cubes": 1, "range": (0, 4), "overlap": 0.4, "radius": 10.0 / 3},
++            {"cubes": 1, "range": (0, 4), "overlap": 0.9, "radius": 20.0},
++            {"cubes": 2, "range": (-4, 4), "overlap": 0.5, "radius": 4.0},
++            {"cubes": 3, "range": (-4, 4), "overlap": 0.5, "radius": 2.666666666},
++            {"cubes": 10, "range": (-4, 4), "overlap": 0.5, "radius": 0.8},
++            {"cubes": 10, "range": (-4, 4), "overlap": 1.0, "radius": np.inf},
+         ]
+ 
+         for test_case in test_cases:
+diff --git a/test/test_mapper.py b/test/test_mapper.py
+index 26f4370..f521c4f 100644
+--- a/test/test_mapper.py
++++ b/test/test_mapper.py
+@@ -278,7 +278,7 @@ class TestLens:
+     def test_sparse_array(self):
+         mapper = KeplerMapper()
+ 
+-        data = sparse.random(100, 10)
++        data = sparse.random(100, 10).toarray()
+         lens = mapper.fit_transform(data)
+ 
+     def test_lens_size(self):
+@@ -428,6 +428,6 @@ class TestLens:
+     def test_map_sparse(self):
+         mapper = KeplerMapper()
+ 
+-        data = sparse.random(100, 10, random_state=100101)
++        data = sparse.random(100, 10, random_state=100101).toarray()
+         lens = mapper.fit_transform(data)
+         mapping = mapper.map(lens, data)
