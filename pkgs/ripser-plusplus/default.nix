@@ -2,7 +2,7 @@
 , fetchFromGitHub
 , buildPythonPackage
 , cmake
-, gcc
+, gcc12
 , numpy
 , scipy
 , cudaPackages
@@ -18,7 +18,7 @@ buildPythonPackage rec {
     repo = pname;
     rev = gitHash;
     # fetchSubmodules = true;
-    # not neccesary, as the submodule is only used to reproduce the
+    # not necessary, as the submodule is only used to reproduce the
     # paper's experiments, and not for any functional component of the
     # package
     hash = "sha256-5txo6YClNTqlWqHsnXQWJtrBWL174tW3IwBPfdzA24U=";
@@ -30,7 +30,7 @@ buildPythonPackage rec {
   dontUseCmakeConfigure = true;
   nativeBuildInputs = [
     cmake
-    gcc #11
+    gcc12
   ];
   propagatedBuildInputs = [
     numpy

@@ -4,7 +4,7 @@
   inputs = {
 
     nixpkgs = {
-      url = github:nixos/nixpkgs/nixos-23.11;
+      url = github:nixos/nixpkgs/nixos-24.05;
     };
 
   };
@@ -16,7 +16,7 @@
     }:
     let
       system = "x86_64-linux";
-      pythonVersions = [ "python3" "python310" "python311" ];
+      pythonVersions = [ "python3" "python311" "python312" ];
       LD_LIBRARY_PATH = "/run/opengl-driver/lib:/usr/lib/x86_64-linux-gnu/nvidia/current:" + (pkgs.lib.makeLibraryPath [
         pkgs.cudaPackages.cudatoolkit
       ]);
@@ -28,7 +28,29 @@
           # must allow the following unfree packages to utilize CUDA:
           # cudatoolkit
           allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
+            "cuda-merged"
+            "cuda_cccl"
+            "cuda_cudart"
+            "cuda_cuobjdump"
+            "cuda_cupti"
+            "cuda_cuxxfilt"
+            "cuda_gdb"
+            "cuda_nvcc"
+            "cuda_nvdisasm"
+            "cuda_nvml_dev"
+            "cuda_nvprune"
+            "cuda_nvrtc"
+            "cuda_nvtx"
+            "cuda_profiler_api"
+            "cuda_sanitizer_api"
             "cudatoolkit"
+            "libcublas"
+            "libcufft"
+            "libcurand"
+            "libcusolver"
+            "libcusparse"
+            "libnpp"
+            "libnvjitlink"
           ];
         };
         overlays = [ self.overlays.default ];
@@ -38,6 +60,7 @@
       usefulPythonPackages = pythonVersion:
         with pkgs."${pythonVersion}Packages"; [
           jupyter
+          jupyterlab
           igraph
           ipywidgets
           matplotlib
@@ -46,12 +69,11 @@
           plotly
           scikit-learn
           umap-learn
+          gudhi
+          pot
           # packages from this flake's overlay
           distm
           kmapper
-          # Gudhi takes a while to build...
-          gudhi
-          pot
         ];
 
       usefulPackages = with pkgs; [
@@ -62,8 +84,6 @@
         {
 
           "distm-${pythonVersion}" = pkgs."${pythonVersion}".pkgs.distm;
-          "pot-${pythonVersion}" = pkgs."${pythonVersion}".pkgs.pot;
-          "gudhi-${pythonVersion}" = pkgs."${pythonVersion}".pkgs.gudhi;
           "kmapper-${pythonVersion}" = pkgs."${pythonVersion}".pkgs.kmapper;
           "ripser-plusplus-${pythonVersion}" = pkgs."${pythonVersion}".pkgs.ripser-plusplus;
           "ripser-plusplus-arbitrary-simplex-${pythonVersion}" = pkgs."${pythonVersion}".pkgs.ripser-plusplus-arbitrary-simplex;
@@ -106,7 +126,7 @@
     in
     {
 
-      overlays.default = import ./overlays;
+      overlays.default = (import ./overlays) pythonVersions;
 
       packages.${system} = lib.attrsets.mergeAttrsList (lib.lists.forEach pythonVersions (pyVer:
         (pythonPackageGen pyVer)
